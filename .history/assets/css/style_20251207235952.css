@@ -28,6 +28,13 @@ body {
   object-fit: cover;
 }
 
+/* form {
+  background-image: url("../assets/images/backgroundInput.webp");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+} */
+
 .close-btn {
   padding: 12px;
   font-size: 15px;
@@ -66,7 +73,7 @@ label {
   font-weight: 700;
   display: block;
   margin-bottom: 5px;
-  font-size: 15px;
+  font-size: 14px;
   color: #333;
 }
 
