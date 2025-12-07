@@ -50,15 +50,16 @@ fields.forEach((f) => {
 
 // Find optimal split with minimal difference between men and women
 function findOptimalSplit(total, men, women) {
-  // Validate parameters to prevent division by zero
-  if (men <= 0 || women <= 0 || (men + women) === 0) {
+  // Validate parameters - both men and women must be positive
+  // This function is only called when both genders are present
+  if (men <= 0 || women <= 0) {
     return null;
   }
   
   let bestSolution = null;
   let minActualTotal = Infinity;
   
-  // Maximum range to search beyond the calculated minimum
+  // Maximum range to search beyond the calculated minimum (10,000đ provides good coverage)
   const MAX_SEARCH_RANGE = 10000;
 
   // Try differences from 1000đ to 5000đ
@@ -162,8 +163,8 @@ document.getElementById("calculateBtn").addEventListener("click", function () {
       actualTotal = solution.actualTotal;
       difference = solution.difference;
     } else {
-      // Fallback: if no solution found, split evenly
-      console.warn('Optimal solution not found, using fallback equal split');
+      // Fallback: if no optimal solution found, split evenly with no difference
+      // This shouldn't happen with the current algorithm but provides a safety net
       const avgPerPerson = roundUpTo1000(expectedTotal / (men + women));
       perMan = avgPerPerson;
       perWoman = avgPerPerson;
