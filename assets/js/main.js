@@ -55,19 +55,19 @@ function findOptimalSplit(total, men, women) {
 
   // Try differences from 1000đ to 5000đ
   for (let diff = 1000; diff <= 5000; diff += 1000) {
-    // Try all possible combinations where perMan = perWoman + diff
-    // Start from a base where we distribute evenly
-    const avgPerPerson = total / (men + women);
+    // For a given difference, we need: perMan * men + perWoman * women >= total
+    // Where perMan = perWoman + diff
+    // So: (perWoman + diff) * men + perWoman * women >= total
+    // Solving for perWoman: perWoman >= (total - diff * men) / (men + women)
     
-    // Try different base values for women's payment
-    // Start from a reasonable lower bound
-    const minPerWoman = Math.max(1000, Math.floor(avgPerPerson / 1000) * 1000 - 5000);
-    const maxPerWoman = Math.ceil(avgPerPerson / 1000) * 1000 + 5000;
+    const minPerWomanExact = (total - diff * men) / (men + women);
+    const minPerWoman = Math.max(1000, roundUpTo1000(minPerWomanExact));
     
-    for (let basePerWoman = minPerWoman; basePerWoman <= maxPerWoman; basePerWoman += 1000) {
-      const perWoman = basePerWoman;
+    // Try a small range around the calculated minimum
+    const maxPerWoman = minPerWoman + 10000;
+    
+    for (let perWoman = minPerWoman; perWoman <= maxPerWoman; perWoman += 1000) {
       const perMan = perWoman + diff;
-      
       const actualTotal = perMan * men + perWoman * women;
       
       // Check if this solution meets requirements
@@ -82,6 +82,8 @@ function findOptimalSplit(total, men, women) {
             difference: diff
           };
         }
+        // Once we find a valid solution for this diff, no need to go higher
+        break;
       }
     }
   }
@@ -110,12 +112,12 @@ document.getElementById("calculateBtn").addEventListener("click", function () {
   if (!valid) return;
 
   // Get input values
-  const men = parseInt(document.getElementById("men").value);
-  const women = parseInt(document.getElementById("women").value);
-  const hours = parseFloat(document.getElementById("hours").value);
-  const pHour = parseInt(document.getElementById("pricePerHour").value);
-  const scount = parseInt(document.getElementById("shuttleCount").value);
-  const pShut = parseInt(document.getElementById("pricePerShuttle").value);
+  const men = parseInt(document.getElementById("men").value) || 0;
+  const women = parseInt(document.getElementById("women").value) || 0;
+  const hours = parseFloat(document.getElementById("hours").value) || 0;
+  const pHour = parseInt(document.getElementById("pricePerHour").value) || 0;
+  const scount = parseInt(document.getElementById("shuttleCount").value) || 0;
+  const pShut = parseInt(document.getElementById("pricePerShuttle").value) || 0;
 
   // Calculate expected total
   const expectedTotal = hours * pHour + scount * pShut;
@@ -143,7 +145,8 @@ document.getElementById("calculateBtn").addEventListener("click", function () {
       actualTotal = solution.actualTotal;
       difference = solution.difference;
     } else {
-      // Fallback: if no solution found (shouldn't happen), split evenly
+      // Fallback: if no solution found, split evenly
+      console.warn('Optimal solution not found, using fallback equal split');
       const avgPerPerson = roundUpTo1000(expectedTotal / (men + women));
       perMan = avgPerPerson;
       perWoman = avgPerPerson;
