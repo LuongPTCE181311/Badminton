@@ -52,6 +52,7 @@ function findOptimalSplit(total, men, women) {
     let perWoman = Math.ceil((avgCost - diff/2) / 1000) * 1000;
     
     // Đảm bảo chênh lệch đúng (with max iterations to prevent infinite loop)
+    // Note: We only increase values (never decrease) to maintain actualTotal >= total
     let iterations = 0;
     const maxIterations = 100;
     while (perMan - perWoman < diff && iterations < maxIterations) {
@@ -60,7 +61,7 @@ function findOptimalSplit(total, men, women) {
     }
     iterations = 0;
     while (perMan - perWoman > diff && iterations < maxIterations) {
-      perWoman += 1000;
+      perWoman += 1000; // Increase perWoman to reduce the difference
       iterations++;
     }
     
@@ -68,6 +69,7 @@ function findOptimalSplit(total, men, women) {
     let actualTotal = perMan * men + perWoman * women;
     
     // Điều chỉnh nếu tổng thực tế < tổng dự kiến (with max iterations)
+    // Only increase perWoman (not decrease) to ensure actualTotal >= total
     iterations = 0;
     while (actualTotal < total && iterations < maxIterations) {
       perWoman += 1000;
@@ -149,10 +151,12 @@ document.getElementById("calculateBtn").addEventListener("click", function () {
       actualTotal = solution.actualTotal;
     }
     
+    const diff = actualTotal - total;
+    const diffPrefix = diff >= 0 ? '+' : '';
     document.getElementById("result").innerHTML = `
 <b>Tổng dự kiến:</b> ${total.toLocaleString()} VND<br>
 <b>Tổng thực tế:</b> ${actualTotal.toLocaleString()} VND<br>
-<b>Chênh lệch:</b> +${(actualTotal - total).toLocaleString()} VND<br><br>
+<b>Chênh lệch:</b> ${diffPrefix}${diff.toLocaleString()} VND<br><br>
 <b>Tiền mỗi nam:</b> ${perMan.toLocaleString()} đ (x${men})<br>
 <b>Tiền mỗi nữ:</b> ${perWoman.toLocaleString()} đ (x${women})<br><br>
 <b>Chênh lệch Nam/Nữ:</b> ${(perMan - perWoman).toLocaleString()} đ
@@ -162,10 +166,12 @@ document.getElementById("calculateBtn").addEventListener("click", function () {
     perMan = Math.ceil(total / men / 1000) * 1000;
     actualTotal = perMan * men;
     
+    const diff = actualTotal - total;
+    const diffPrefix = diff >= 0 ? '+' : '';
     document.getElementById("result").innerHTML = `
 <b>Tổng dự kiến:</b> ${total.toLocaleString()} VND<br>
 <b>Tổng thực tế:</b> ${actualTotal.toLocaleString()} VND<br>
-<b>Chênh lệch:</b> +${(actualTotal - total).toLocaleString()} VND<br><br>
+<b>Chênh lệch:</b> ${diffPrefix}${diff.toLocaleString()} VND<br><br>
 <b>Tiền mỗi nam:</b> ${perMan.toLocaleString()} đ (x${men})
 `;
   } else if (women > 0) {
@@ -173,10 +179,12 @@ document.getElementById("calculateBtn").addEventListener("click", function () {
     perWoman = Math.ceil(total / women / 1000) * 1000;
     actualTotal = perWoman * women;
     
+    const diff = actualTotal - total;
+    const diffPrefix = diff >= 0 ? '+' : '';
     document.getElementById("result").innerHTML = `
 <b>Tổng dự kiến:</b> ${total.toLocaleString()} VND<br>
 <b>Tổng thực tế:</b> ${actualTotal.toLocaleString()} VND<br>
-<b>Chênh lệch:</b> +${(actualTotal - total).toLocaleString()} VND<br><br>
+<b>Chênh lệch:</b> ${diffPrefix}${diff.toLocaleString()} VND<br><br>
 <b>Tiền mỗi nữ:</b> ${perWoman.toLocaleString()} đ (x${women})
 `;
   }
