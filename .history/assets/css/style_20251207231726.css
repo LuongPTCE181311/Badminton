@@ -287,6 +287,11 @@ input.error-border {
     outline: none;
     color: white;
   }
+
+  .close-btn:hover {
+  background: #d32f2f;
+}
+
 }
 
 /* Very small mobile devices */

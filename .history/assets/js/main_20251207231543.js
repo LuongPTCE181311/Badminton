@@ -24,6 +24,7 @@ function validateField(id) {
         setError(id, "Giá trị phải ≥ 0");
         return false;
       }
+      // Kiểm tra cả nam và nữ đều là 0
       const men = parseInt(document.getElementById("men").value) || 0;
       const women = parseInt(document.getElementById("women").value) || 0;
       if (men === 0 && women === 0) {
@@ -72,6 +73,7 @@ function validateField(id) {
   return true;
 }
 
+// Gắn validate realtime
 [
   "men",
   "women",
@@ -83,6 +85,7 @@ function validateField(id) {
 ].forEach((id) => {
   document.getElementById(id).addEventListener("input", () => {
     validateField(id);
+    // Khi thay đổi nam hoặc nữ, validate cả 2 trường
     if (id === "men" || id === "women") {
       const otherId = id === "men" ? "women" : "men";
       validateField(otherId);
@@ -110,7 +113,9 @@ function roundUpToThousand(num) {
 
 function findOptimalSplit(total, men, women) {
   let bestSolution = null;
-  let minDifference = Infinity;
+  let minDifference = Infinity; // Chênh lệch giữa tổng thực tế và tổng dự kiến
+
+  // Thử các chênh lệch từ 3000đ đến 5000đ
   for (let targetDiff = 3000; targetDiff <= 5000; targetDiff += 1000) {
     let perWoman = (total - targetDiff * men) / (men + women);
     let perMan = perWoman + targetDiff;
@@ -126,16 +131,22 @@ function findOptimalSplit(total, men, women) {
     while (actualTotal < total) {
       const option1Woman = perWoman + 1000;
       const option1Total = perMan * men + option1Woman * women;
+
+      
       if (perMan - option1Woman < 3000) {
         perMan += 1000;
       }
       perWoman = option1Woman;
       actualTotal = perMan * men + perWoman * women;
     }
+
+    // Kiểm tra chênh lệch nam/nữ vẫn trong khoảng hợp lệ
     const genderDiff = perMan - perWoman;
     if (genderDiff < 3000 || genderDiff > 5000) {
-      continue;
+      continue; // Bỏ qua phương án này
     }
+
+    // So sánh với phương án tốt nhất
     const difference = actualTotal - total;
     if (difference < minDifference) {
       minDifference = difference;
@@ -179,6 +190,7 @@ document.getElementById("calculateBtn").addEventListener("click", function () {
   const scount = parseInt(document.getElementById("shuttleCount").value);
   const pShut = parseInt(document.getElementById("pricePerShuttle").value);
 
+  // Tính tổng: (số sân × số giờ × giá/giờ) + (số cầu × giá cầu)
   const courtCost = courts * hours * pHour;
   const shuttleCost = scount * pShut;
   const total = courtCost + shuttleCost;
@@ -188,6 +200,7 @@ document.getElementById("calculateBtn").addEventListener("click", function () {
     actualTotal = 0;
 
   if (men > 0 && women > 0) {
+    // Sử dụng thuật toán tối ưu
     const solution = findOptimalSplit(total, men, women);
     perMan = solution.perMan;
     perWoman = solution.perWoman;

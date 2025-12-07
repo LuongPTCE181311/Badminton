@@ -24,6 +24,7 @@ function validateField(id) {
         setError(id, "Giá trị phải ≥ 0");
         return false;
       }
+      
       const men = parseInt(document.getElementById("men").value) || 0;
       const women = parseInt(document.getElementById("women").value) || 0;
       if (men === 0 && women === 0) {
@@ -110,7 +111,7 @@ function roundUpToThousand(num) {
 
 function findOptimalSplit(total, men, women) {
   let bestSolution = null;
-  let minDifference = Infinity;
+  let minDifference = Infinity; 
   for (let targetDiff = 3000; targetDiff <= 5000; targetDiff += 1000) {
     let perWoman = (total - targetDiff * men) / (men + women);
     let perMan = perWoman + targetDiff;

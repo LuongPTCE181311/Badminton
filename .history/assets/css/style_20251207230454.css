@@ -7,7 +7,7 @@ body {
   padding: 10px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
-  background: linear-gradient(135deg, #bc70cf 30%, #5a3aec 100%);
+  background: linear-gradient(135deg, #9b0ebe 30%, #d83ed0 100%);
   min-height: 100vh;
 }
 
@@ -26,18 +26,6 @@ body {
   margin: 0 auto 15px auto;
   border-radius: 10px;
   object-fit: cover;
-}
-
-.close-btn {
-  padding: 12px;
-  font-size: 15px;
-  border-radius: 10px;
-  width: 100%;
-  margin-top: 3%;
-  background-color: #bd5ad6;
-  border: none;
-  outline: none;
-  color: white;
 }
 
 .title {
@@ -282,10 +270,9 @@ input.error-border {
     border-radius: 10px;
     width: 100%;
     margin-top: 3%;
-    background-color: #bd5ad6;
-    border: none;
-    outline: none;
-    color: white;
+    background-color: #9533ad;
+    border: none;        
+    outline: none; 
   }
 }
 

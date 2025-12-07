@@ -24,6 +24,7 @@ function validateField(id) {
         setError(id, "Giá trị phải ≥ 0");
         return false;
       }
+      // Kiểm tra cả nam và nữ đều là 0
       const men = parseInt(document.getElementById("men").value) || 0;
       const women = parseInt(document.getElementById("women").value) || 0;
       if (men === 0 && women === 0) {
@@ -72,6 +73,7 @@ function validateField(id) {
   return true;
 }
 
+// Gắn validate realtime
 [
   "men",
   "women",
@@ -83,6 +85,7 @@ function validateField(id) {
 ].forEach((id) => {
   document.getElementById(id).addEventListener("input", () => {
     validateField(id);
+    // Khi thay đổi nam hoặc nữ, validate cả 2 trường
     if (id === "men" || id === "women") {
       const otherId = id === "men" ? "women" : "men";
       validateField(otherId);
@@ -110,32 +113,53 @@ function roundUpToThousand(num) {
 
 function findOptimalSplit(total, men, women) {
   let bestSolution = null;
-  let minDifference = Infinity;
+  let minDifference = Infinity; // Chênh lệch giữa tổng thực tế và tổng dự kiến
+
+  // Thử các chênh lệch từ 3000đ đến 5000đ
   for (let targetDiff = 3000; targetDiff <= 5000; targetDiff += 1000) {
+    // Giải hệ phương trình để tìm perMan và perWoman ban đầu
+    // perMan * men + perWoman * women = total
+    // perMan - perWoman = targetDiff
+
     let perWoman = (total - targetDiff * men) / (men + women);
     let perMan = perWoman + targetDiff;
+
+    // Làm tròn lên 1000đ
     perWoman = roundUpToThousand(perWoman);
     perMan = roundUpToThousand(perMan);
+
+    // Điều chỉnh để đảm bảo chênh lệch trong khoảng 3000-5000
     while (perMan - perWoman < 3000) {
       perMan += 1000;
     }
     while (perMan - perWoman > 5000) {
       perWoman += 1000;
     }
+
+    // Tính tổng thực tế
     let actualTotal = perMan * men + perWoman * women;
+
+    // Nếu tổng thực tế < tổng dự kiến, tăng dần
     while (actualTotal < total) {
+      // Thử tăng perWoman trước (ít ảnh hưởng hơn nếu số nữ ít)
       const option1Woman = perWoman + 1000;
       const option1Total = perMan * men + option1Woman * women;
+
+      // Kiểm tra xem có cần tăng perMan để giữ chênh lệch không
       if (perMan - option1Woman < 3000) {
         perMan += 1000;
       }
       perWoman = option1Woman;
       actualTotal = perMan * men + perWoman * women;
     }
+
+    // Kiểm tra chênh lệch nam/nữ vẫn trong khoảng hợp lệ
     const genderDiff = perMan - perWoman;
     if (genderDiff < 3000 || genderDiff > 5000) {
-      continue;
+      continue; // Bỏ qua phương án này
     }
+
+    // So sánh với phương án tốt nhất
     const difference = actualTotal - total;
     if (difference < minDifference) {
       minDifference = difference;
@@ -179,6 +203,7 @@ document.getElementById("calculateBtn").addEventListener("click", function () {
   const scount = parseInt(document.getElementById("shuttleCount").value);
   const pShut = parseInt(document.getElementById("pricePerShuttle").value);
 
+  // Tính tổng: (số sân × số giờ × giá/giờ) + (số cầu × giá cầu)
   const courtCost = courts * hours * pHour;
   const shuttleCost = scount * pShut;
   const total = courtCost + shuttleCost;
@@ -188,6 +213,7 @@ document.getElementById("calculateBtn").addEventListener("click", function () {
     actualTotal = 0;
 
   if (men > 0 && women > 0) {
+    // Sử dụng thuật toán tối ưu
     const solution = findOptimalSplit(total, men, women);
     perMan = solution.perMan;
     perWoman = solution.perWoman;
@@ -208,12 +234,10 @@ document.getElementById("calculateBtn").addEventListener("click", function () {
           "vi-VN"
         )} VND<br><br>
 
-        <b>Tiền mỗi nam:</b> <b>${perMan.toLocaleString(
+        <b>Tiền mỗi nam:</b> <b>${perMan.toLocaleString("vi-VN")} đ (x${men}) <br>
+        <b>Tiền mỗi nữ:</b> ${perWoman.toLocaleString(
           "vi-VN"
-        )} đ </b>(x${men})<br>
-        <b>Tiền mỗi nữ:</b> <b>${perWoman.toLocaleString(
-          "vi-VN"
-        )} đ </b>(x${women})<br><br>
+        )} đ (x${women})<br><br>
 
         <b>Chênh lệch Nam/Nữ:</b> ${(perMan - perWoman).toLocaleString(
           "vi-VN"

@@ -110,7 +110,7 @@ function roundUpToThousand(num) {
 
 function findOptimalSplit(total, men, women) {
   let bestSolution = null;
-  let minDifference = Infinity;
+  let minDifference = Infinity; 
   for (let targetDiff = 3000; targetDiff <= 5000; targetDiff += 1000) {
     let perWoman = (total - targetDiff * men) / (men + women);
     let perMan = perWoman + targetDiff;

@@ -29,16 +29,17 @@ body {
 }
 
 .close-btn {
-  padding: 12px;
-  font-size: 15px;
-  border-radius: 10px;
-  width: 100%;
-  margin-top: 3%;
-  background-color: #bd5ad6;
-  border: none;
-  outline: none;
-  color: white;
-}
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 10px;
+    width: 100%;
+    margin-top: 3%;
+    background-color: #bd5ad6;
+    border: none;        
+    outline: none;
+    color: white; 
+    
+  }
 
 .title {
   font-size: clamp(24px, 5vw, 30px);
@@ -283,9 +284,10 @@ input.error-border {
     width: 100%;
     margin-top: 3%;
     background-color: #bd5ad6;
-    border: none;
+    border: none;        
     outline: none;
-    color: white;
+    color: white; 
+    
   }
 }
 
