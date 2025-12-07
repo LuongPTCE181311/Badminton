@@ -51,21 +51,28 @@ function findOptimalSplit(total, men, women) {
     let perMan = Math.ceil((avgCost + diff/2) / 1000) * 1000;
     let perWoman = Math.ceil((avgCost - diff/2) / 1000) * 1000;
     
-    // Đảm bảo chênh lệch đúng
-    while (perMan - perWoman < diff) {
+    // Đảm bảo chênh lệch đúng (with max iterations to prevent infinite loop)
+    let iterations = 0;
+    const maxIterations = 100;
+    while (perMan - perWoman < diff && iterations < maxIterations) {
       perMan += 1000;
+      iterations++;
     }
-    while (perMan - perWoman > diff) {
+    iterations = 0;
+    while (perMan - perWoman > diff && iterations < maxIterations) {
       perWoman += 1000;
+      iterations++;
     }
     
     // Tính tổng thực tế
     let actualTotal = perMan * men + perWoman * women;
     
-    // Điều chỉnh nếu tổng thực tế < tổng dự kiến
-    while (actualTotal < total) {
+    // Điều chỉnh nếu tổng thực tế < tổng dự kiến (with max iterations)
+    iterations = 0;
+    while (actualTotal < total && iterations < maxIterations) {
       perWoman += 1000;
       actualTotal = perMan * men + perWoman * women;
+      iterations++;
     }
     
     // Kiểm tra nếu đây là phương án tốt nhất
@@ -108,8 +115,8 @@ document.getElementById("calculateBtn").addEventListener("click", function () {
   });
   if (!valid) return;
 
-  const men = parseInt(document.getElementById("men").value);
-  const women = parseInt(document.getElementById("women").value);
+  const men = parseInt(document.getElementById("men").value, 10) || 0;
+  const women = parseInt(document.getElementById("women").value, 10) || 0;
   
   // Check that at least one of men or women is > 0
   if (men <= 0 && women <= 0) {
@@ -118,9 +125,9 @@ document.getElementById("calculateBtn").addEventListener("click", function () {
     return;
   }
   const hours = parseFloat(document.getElementById("hours").value);
-  const pHour = parseInt(document.getElementById("pricePerHour").value);
-  const scount = parseInt(document.getElementById("shuttleCount").value);
-  const pShut = parseInt(document.getElementById("pricePerShuttle").value);
+  const pHour = parseInt(document.getElementById("pricePerHour").value, 10);
+  const scount = parseInt(document.getElementById("shuttleCount").value, 10);
+  const pShut = parseInt(document.getElementById("pricePerShuttle").value, 10);
 
   const total = hours * pHour + scount * pShut;
 
@@ -131,9 +138,16 @@ document.getElementById("calculateBtn").addEventListener("click", function () {
   if (men > 0 && women > 0) {
     // Use optimal split algorithm for mixed gender
     const solution = findOptimalSplit(total, men, women);
-    perMan = solution.perMan;
-    perWoman = solution.perWoman;
-    actualTotal = solution.actualTotal;
+    if (!solution) {
+      // Fallback if no solution found (should not happen with proper constraints)
+      perMan = Math.ceil(total / (men + women) / 1000) * 1000;
+      perWoman = perMan;
+      actualTotal = perMan * men + perWoman * women;
+    } else {
+      perMan = solution.perMan;
+      perWoman = solution.perWoman;
+      actualTotal = solution.actualTotal;
+    }
     
     document.getElementById("result").innerHTML = `
 <b>Tổng dự kiến:</b> ${total.toLocaleString()} VND<br>
