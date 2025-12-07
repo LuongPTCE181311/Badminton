@@ -1,0 +1,134 @@
+# index.html
+
+```html
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tính Tiền Sân Cầu Lông</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+    <div class="container">
+        <h2>Tính Tiền Sân Cầu Lông</h2>
+
+        <label>Số lượng Nam:</label>
+        <input type="number" id="men" />
+
+        <label>Số lượng Nữ:</label>
+        <input type="number" id="women" />
+
+        <label>Số giờ chơi:</label>
+        <input type="number" id="hours" />
+
+        <label>Số tiền / 1 giờ:</label>
+        <input type="number" id="pricePerHour" />
+
+        <label>Số lượng cầu:</label>
+        <input type="number" id="shuttleCount" />
+
+        <label>Số tiền / 1 trái cầu:</label>
+        <input type="number" id="pricePerShuttle" />
+
+        <button id="calculateBtn">Tính tiền</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
+```
+
+---
+
+# assets/css/style.css
+
+```css
+body {
+    background: #f2f2f2;
+    font-family: Arial;
+}
+
+.container {
+    width: 450px;
+    margin: 30px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h2 {
+    text-align: center;
+}
+
+label {
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background: #1e88e5;
+    color: white;
+    border: none;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#result {
+    margin-top: 20px;
+    background: #e8f0fe;
+    padding: 15px;
+    border-radius: 6px;
+    font-size: 15px;
+}
+```
+
+---
+
+# assets/js/main.js
+
+```javascript
+document.getElementById("calculateBtn").addEventListener("click", function () {
+    const men = parseInt(document.getElementById("men").value);
+    const women = parseInt(document.getElementById("women").value);
+    const hours = parseFloat(document.getElementById("hours").value);
+    const pricePerHour = parseInt(document.getElementById("pricePerHour").value);
+    const shuttleCount = parseInt(document.getElementById("shuttleCount").value);
+    const pricePerShuttle = parseInt(document.getElementById("pricePerShuttle").value);
+    const resultDiv = document.getElementById("result");
+
+    function showError(msg) {
+        resultDiv.innerHTML = `<div style="color:red; font-weight:bold;">${msg}</div>`;
+        return true;
+    }
+
+    if (isNaN(men) || men < 0) return showError("Số lượng Nam không hợp lệ!");
+    if (isNaN(women) || women < 0) return showError("Số lượng Nữ không hợp lệ!");
+    if (men + women === 0) return showError("Phải có ít nhất 1 người chơi!");
+    if (isNaN(hours) || hours <= 0) return showError("Số giờ chơi phải lớn hơn 0!");
+    if (isNaN(pricePerHour) || pricePerHour < 1000) return showError("Tiền / giờ phải ≥ 1.000 VND!");
+    if (isNaN(shuttleCount) || shuttleCount < 0) return showError("Số lượng cầu không hợp lệ!");
+    if (isNaN(pricePerShuttle) || pricePerShuttle < 1000) return showError("Tiền 1 trái cầu phải ≥ 1.000 VND!");
+
+    const courtCost = hours * pricePerHour;
+    const shuttleCost = shuttleCount * pricePerShuttle;
+    const totalCost = courtCost + shuttleCost;
+
+    let costPerMan, costPerWo
+```

@@ -1,0 +1,46 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Badminton Fee Calculator</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h2>Tính Tiền Sân Cầu Lông</h2>
+        <label>Số lượng Nam:</label>
+        <input type="number" id="maleCount" min="0" />
+        <label>Số lượng Nữ:</label>
+        <input type="number" id="femaleCount" min="0" />
+
+        <label>Số giờ chơi:</label>
+        <input type="number" id="hours" min="0" step="0.5" />
+
+
+        <label>Số tiền / 1 giờ:</label>
+        <input type="number" id="pricePerHour" min="0" />
+
+
+        <label>Số lượng cầu:</label>
+        <input type="number" id="shuttleCount" min="0" />
+
+
+        <label>Số tiền / 1 trái cầu:</label>
+        <input type="number" id="shuttlePrice" min="0" />
+
+
+        <button onclick="calculateFee()">Tính tiền</button>
+
+
+        <div id="result" class="result-box" style="display:none;"></div>
+    </div>
+
+
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>
