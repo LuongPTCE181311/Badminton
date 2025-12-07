@@ -50,8 +50,16 @@ fields.forEach((f) => {
 
 // Find optimal split with minimal difference between men and women
 function findOptimalSplit(total, men, women) {
+  // Validate parameters to prevent division by zero
+  if (men <= 0 || women <= 0 || (men + women) === 0) {
+    return null;
+  }
+  
   let bestSolution = null;
   let minActualTotal = Infinity;
+  
+  // Maximum range to search beyond the calculated minimum
+  const MAX_SEARCH_RANGE = 10000;
 
   // Try differences from 1000đ to 5000đ
   for (let diff = 1000; diff <= 5000; diff += 1000) {
@@ -64,7 +72,7 @@ function findOptimalSplit(total, men, women) {
     const minPerWoman = Math.max(1000, roundUpTo1000(minPerWomanExact));
     
     // Try a small range around the calculated minimum
-    const maxPerWoman = minPerWoman + 10000;
+    const maxPerWoman = minPerWoman + MAX_SEARCH_RANGE;
     
     for (let perWoman = minPerWoman; perWoman <= maxPerWoman; perWoman += 1000) {
       const perMan = perWoman + diff;
@@ -118,6 +126,15 @@ document.getElementById("calculateBtn").addEventListener("click", function () {
   const pHour = parseInt(document.getElementById("pricePerHour").value) || 0;
   const scount = parseInt(document.getElementById("shuttleCount").value) || 0;
   const pShut = parseInt(document.getElementById("pricePerShuttle").value) || 0;
+
+  // Validate that at least one of men or women is > 0
+  if (men === 0 && women === 0) {
+    document.getElementById("result").innerHTML = `
+      <b style="color: red;">Lỗi:</b> Phải có ít nhất 1 người chơi (nam hoặc nữ)!
+    `;
+    openModal();
+    return;
+  }
 
   // Calculate expected total
   const expectedTotal = hours * pHour + scount * pShut;
