@@ -93,7 +93,8 @@ input.error-border {
   color: #d84747;
   font-weight: 600;
   display: block;
-  min-height: 10px;
+  margin-top: 5px;
+  min-height: 18px;
 }
 
 .btn {
@@ -233,6 +234,7 @@ input.error-border {
     font-size: 22px;
     padding: 0 10px;
   }
+
 
   .error {
     font-size: 12px;

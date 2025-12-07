@@ -93,7 +93,8 @@ input.error-border {
   color: #d84747;
   font-weight: 600;
   display: block;
-  min-height: 10px;
+  margin-top: 5px;
+  min-height: 18px;
 }
 
 .btn {
@@ -214,13 +215,13 @@ input.error-border {
 
   .container {
     width: calc(100% - 20px);
-    margin: 0 auto;
+    margin: 15px auto;
     padding: 20px 15px;
     border-radius: 12px;
   }
 
   .hero {
-    padding: 5px 0;
+    padding: 10px 0;
   }
 
   .hero-img {
@@ -232,6 +233,10 @@ input.error-border {
   .title {
     font-size: 22px;
     padding: 0 10px;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
   }
 
   .error {
@@ -249,7 +254,7 @@ input.error-border {
 
   input {
     width: 100%;
-    padding: 9px;
+    padding: 5px;
     background: rgba(255, 255, 255, 0.6) !important;
     border-radius: 8px;
     border: 1px solid #ccc;

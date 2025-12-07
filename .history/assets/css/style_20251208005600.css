@@ -93,6 +93,7 @@ input.error-border {
   color: #d84747;
   font-weight: 600;
   display: block;
+  
   min-height: 10px;
 }
 

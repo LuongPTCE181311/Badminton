@@ -69,7 +69,7 @@ label {
 
 input {
   width: 100%;
-  padding: 8px 8px;
+  padding: 6px 8px;
   background: rgba(255, 255, 255, 0.6) !important;
   border-radius: 8px;
   border: 1px solid #ccc;
@@ -93,7 +93,8 @@ input.error-border {
   color: #d84747;
   font-weight: 600;
   display: block;
-  min-height: 10px;
+  margin-top: 5px;
+  min-height: 18px;
 }
 
 .btn {
@@ -214,16 +215,16 @@ input.error-border {
 
   .container {
     width: calc(100% - 20px);
-    margin: 0 auto;
+    margin: 15px auto;
     padding: 20px 15px;
     border-radius: 12px;
   }
 
   .hero {
-    padding: 5px 0;
+    padding: 10px 0;
   }
 
-  .hero-img {
+  . hero-img {
     max-width: 100%;
     width: calc(100% - 20px);
     margin: 0 auto 10px auto;
@@ -234,13 +235,8 @@ input.error-border {
     padding: 0 10px;
   }
 
-  .error {
-    font-size: 12px;
-    color: #d84747;
-    font-weight: 600;
-    display: block;
-    margin-top: 5px;
-    min-height: 10px;
+  . form-group {
+    margin-bottom: 12px;
   }
 
   label {
@@ -249,7 +245,7 @@ input.error-border {
 
   input {
     width: 100%;
-    padding: 9px;
+    padding: 12px;
     background: rgba(255, 255, 255, 0.6) !important;
     border-radius: 8px;
     border: 1px solid #ccc;
@@ -308,7 +304,7 @@ input.error-border {
   }
 
   . title {
-    font-size: 22px;
+    font-size: 20px;
   }
 
   . hero-img {
