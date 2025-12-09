@@ -11,7 +11,8 @@
 <body>
     <div class="hero">
         <img src="assets/images/Caulongvuive.jpg" id="img" class="hero-img" alt="Group" />
-        <h1 class="title">Cầu lông vui vẻ : 3333</h1>
+        <h1 class="title">Cầu lông vui vẻ :3333</h1>
+        
     </div>
 
     <div class="container">
@@ -23,7 +24,7 @@
             </div>
 
             <div class="form-group">
-                <label>Số lượng Nữ: </label>
+                <label>Số lượng Nữ:</label>
                 <input type="number" id="women" min="0" placeholder="VD: 3" />
                 <span class="error" id="women_err"></span>
             </div>
@@ -36,7 +37,7 @@
             </div>
 
             <div class="form-group">
-                <label>Số lượng cầu: </label>
+                <label>Số lượng cầu:</label>
                 <input type="number" id="shuttleCount" min="0" placeholder="VD: 5" />
                 <span class="error" id="shuttleCount_err"></span>
             </div>
@@ -47,13 +48,7 @@
                 <span class="error" id="pricePerShuttle_err"></span>
             </div>
 
-            <div class="form-group">
-                <label>Tiền hoa hồng chủ nhóm VND:</label>
-                <input type="number" id="commission" min="0" placeholder="VD: 10000 (để trống = 0)" />
-                <span class="error" id="commission_err"></span>
-            </div>
-
-            <div style="margin-top: 10px;">
+            <div class="section">
                 <strong>Chi tiết thành viên (tùy chọn):</strong>
                 <div class="note">Thêm thành viên nếu bạn muốn áp dụng giảm tiền cho những người đi trễ hoặc về sớm.
                     Nhập số phút bị thiếu (minutes not played), cứ 30 phút giảm 5.000đ cho thành viên đó.</div>
@@ -62,19 +57,20 @@
             </div>
 
             <div style="margin-top:14px;">
-                <button type="button" id="calculateBtn" class="btn primary">Tính tiền</button>
+                <button type="button" id="calculateBtn" class="btn">Tính tiền</button>
             </div>
         </form>
+    </div>
 
-        <div id="resultModal" class="modal hidden">
-            <div class="modal-box">
-                <button id="closeModal" class="modal-close">✕</button>
-                <h2>Kết Quả Tính Tiền</h2>
-                <div id="resultContent"></div>
-                <button id="closeModalBottom" class="btn primary block">Đóng</button>
-            </div>
+    <!-- Modal -->
+    <div id="resultModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button id="closeModal" class="modal-close">×</button>
+            <h2>Kết Quả Tính Tiền</h2>
+            <div id="result"></div>
+            <div style="text-align:right; margin-top:12px;"><button id="closeModalBtn" class="btn">Đóng</button></div>
         </div>
-
     </div>
 
     <script src="assets/js/main.js"></script>

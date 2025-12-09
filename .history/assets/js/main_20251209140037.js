@@ -43,13 +43,6 @@ function validateField(id) {
         return false;
       }
       break;
-    case "commission":
-      // optional field - allow empty
-      if (value !== "" && (isNaN(value) || parseInt(value) < 0)) {
-        setError(id, "Hoa hồng phải ≥ 0");
-        return false;
-      }
-      break;
     default:
       break;
   }
@@ -57,24 +50,19 @@ function validateField(id) {
   return true;
 }
 
-[
-  "men",
-  "women",
-  "courtTotal",
-  "shuttleCount",
-  "pricePerShuttle",
-  "commission",
-].forEach((id) => {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.addEventListener("input", () => {
-    validateField(id);
-    if (id === "men" || id === "women") {
-      const otherId = id === "men" ? "women" : "men";
-      validateField(otherId);
-    }
-  });
-});
+["men", "women", "courtTotal", "shuttleCount", "pricePerShuttle"].forEach(
+  (id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener("input", () => {
+      validateField(id);
+      if (id === "men" || id === "women") {
+        const otherId = id === "men" ? "women" : "men";
+        validateField(otherId);
+      }
+    });
+  }
+);
 
 // ====== UTILS ======
 function roundUpToThousand(num) {
@@ -152,14 +140,7 @@ if (closeBtn2) closeBtn2.addEventListener("click", closeModal);
 // ====== CALCULATE ======
 document.getElementById("calculateBtn").addEventListener("click", function () {
   let ok = true;
-  const ids = [
-    "men",
-    "women",
-    "courtTotal",
-    "shuttleCount",
-    "pricePerShuttle",
-    "commission",
-  ];
+  const ids = ["men", "women", "courtTotal", "shuttleCount", "pricePerShuttle"];
   ids.forEach((id) => {
     if (!validateField(id)) ok = false;
   });
@@ -170,10 +151,9 @@ document.getElementById("calculateBtn").addEventListener("click", function () {
   const courtTotal = parseInt(document.getElementById("courtTotal").value) || 0;
   const scount = parseInt(document.getElementById("shuttleCount").value) || 0;
   const pShut = parseInt(document.getElementById("pricePerShuttle").value) || 0;
-  const commission = parseInt(document.getElementById("commission").value) || 0;
 
   const shuttleCost = scount * pShut;
-  const totalProjected = courtTotal + shuttleCost + commission;
+  const totalProjected = courtTotal + shuttleCost;
 
   // Gather declared members and their requested reductions (steps*5000)
   const memberRows = Array.from(
@@ -274,14 +254,8 @@ document.getElementById("calculateBtn").addEventListener("click", function () {
   html += `• Tiền sân (tổng): ${courtTotal.toLocaleString("vi-VN")} VND<br>`;
   html += `• Tiền cầu: ${scount} × ${pShut.toLocaleString(
     "vi-VN"
-  )}đ = ${shuttleCost.toLocaleString("vi-VN")} VND<br>`;
-  if (commission > 0) {
-    html += `• Hoa hồng chủ nhóm: ${commission.toLocaleString(
-      "vi-VN"
-    )} VND<br>`;
-  }
-  html += `<br>`;
-  html += `<b>Tổng dự kiến: </b> ${totalProjected.toLocaleString(
+  )}đ = ${shuttleCost.toLocaleString("vi-VN")} VND<br><br>`;
+  html += `<b>Tổng dự kiến:</b> ${totalProjected.toLocaleString(
     "vi-VN"
   )} VND<br>`;
   html += `<b>Tiền mỗi Nam:</b> ${perMan.toLocaleString("vi-VN")} đ<br>`;

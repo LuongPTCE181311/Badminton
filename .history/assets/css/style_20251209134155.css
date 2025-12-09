@@ -138,26 +138,11 @@ textarea.error-border {
   transform: scale(0.98);
 }
 
-/* allow .btn.primary to be used in HTML */
-.btn.primary {
-  background: #5a3aec;
-  color: #fff;
-}
-.btn.primary:hover {
-  background: #3c22b3;
-}
-
-/* helper for full width variants */
-.block {
-  display: block;
-  width: 100%;
-}
-
-/* MODAL OVERLAY */
+/* MODAL */
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5); /* semi-opaque backdrop */
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -165,12 +150,10 @@ textarea.error-border {
   padding: 20px;
 }
 
-/* keep compatibility with previous class names */
 .hidden {
   display: none !important;
 }
 
-/* Primary modal content class used earlier in CSS */
 .modal-content {
   background: white;
   padding: 25px;
@@ -183,65 +166,23 @@ textarea.error-border {
   overflow-y: auto;
 }
 
-/* New: support .modal-box used in your HTML */
-.modal-box {
-  background: white;
-  padding: 22px;
-  width: calc(100% - 40px);
-  max-width: 420px;
-  border-radius: 14px;
-  text-align: left;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-}
-
 /* Modal header/title */
-.modal-box h2,
 .modal-content h2 {
   margin-top: 0;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
   text-align: center;
   color: #333;
   font-size: clamp(20px, 4vw, 24px);
 }
 
-/* Modal close button (the small X at top) */
-.modal-close,
-.modal-box .modal-close,
-.modal-content .modal-close {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: transparent;
-  border: 1px solid #ddd;
-  color: #333;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  font-size: 16px;
-  line-height: 34px;
-  text-align: center;
-  cursor: pointer;
-}
-
-/* ensure "Đóng" button at bottom styled */
-.modal-box .btn,
-.modal-content .btn {
-  margin-top: 14px;
-}
-
 /* Result inside modal */
-#result,
-#resultContent {
+#result {
   line-height: 1.7;
   font-size: 14px;
   color: #555;
 }
 
-#result b,
-#resultContent b {
+#result b {
   color: #333;
 }
 
@@ -365,23 +306,21 @@ textarea.error-border {
 
   .modal {
     padding: 12px;
+    background-color: white;
   }
 
-  .modal-box,
   .modal-content {
     width: calc(100% - 28px);
-    padding: 16px;
+    padding: 18px;
     border-radius: 12px;
   }
 
-  .modal-box h2,
   .modal-content h2 {
     font-size: 20px;
     margin-bottom: 14px;
   }
 
-  #result,
-  #resultContent {
+  #result {
     font-size: 13px;
     line-height: 1.6;
   }
@@ -430,14 +369,12 @@ textarea.error-border {
     font-size: 15px;
   }
 
-  .modal-box,
   .modal-content {
     width: calc(100% - 24px);
-    padding: 12px;
+    padding: 15px;
   }
 
-  #result,
-  #resultContent {
+  #result {
     font-size: 12px;
   }
 }
@@ -469,7 +406,6 @@ textarea.error-border {
     max-width: 600px;
   }
 
-  .modal-box,
   .modal-content {
     max-height: 85vh;
   }

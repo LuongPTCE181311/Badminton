@@ -11,7 +11,6 @@ body {
   min-height: 100vh;
 }
 
-/* HERO */
 .hero {
   text-align: center;
   padding-top: 20px;
@@ -29,7 +28,6 @@ body {
   object-fit: cover;
 }
 
-/* BUTTONS COMMON */
 .close-btn {
   padding: 12px;
   font-size: 15px;
@@ -40,24 +38,17 @@ body {
   border: none;
   outline: none;
   color: white;
-  cursor: pointer;
 }
 
-.close-btn:hover {
-  opacity: 0.95;
-}
-
-/* TITLE */
 .title {
   font-size: clamp(24px, 5vw, 30px);
   font-weight: bold;
   color: white;
   margin: 10px 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0 3);
   padding: 0 15px;
 }
 
-/* CONTAINER */
 .container {
   width: calc(100% - 20px);
   max-width: 450px;
@@ -66,9 +57,9 @@ body {
   padding: 25px;
   border-radius: 15px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  opacity: 0.8;
 }
 
-/* FORM */
 label {
   font-weight: 700;
   display: block;
@@ -77,9 +68,7 @@ label {
   color: #333;
 }
 
-input,
-select,
-textarea {
+input {
   width: 100%;
   padding: 8px 8px;
   background: white;
@@ -88,21 +77,16 @@ textarea {
   transition: 0.3s;
   -webkit-appearance: none;
   appearance: none;
-  font-size: 14px;
-  color: #222;
+  opacity: ;
 }
 
-input:focus,
-select:focus,
-textarea:focus {
+input:focus {
   outline: none;
   border-color: #1e88e5;
-  box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.08);
+  box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1);
 }
 
-input.error-border,
-select.error-border,
-textarea.error-border {
+input.error-border {
   border-color: #e53935 !important;
 }
 
@@ -111,11 +95,9 @@ textarea.error-border {
   color: #d84747;
   font-weight: 600;
   display: block;
-  min-height: 14px;
-  margin-top: 6px;
+  min-height: 10px;
 }
 
-/* ACTION BUTTON */
 .btn {
   width: 100%;
   padding: 14px;
@@ -138,26 +120,10 @@ textarea.error-border {
   transform: scale(0.98);
 }
 
-/* allow .btn.primary to be used in HTML */
-.btn.primary {
-  background: #5a3aec;
-  color: #fff;
-}
-.btn.primary:hover {
-  background: #3c22b3;
-}
-
-/* helper for full width variants */
-.block {
-  display: block;
-  width: 100%;
-}
-
-/* MODAL OVERLAY */
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5); /* semi-opaque backdrop */
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -165,17 +131,15 @@ textarea.error-border {
   padding: 20px;
 }
 
-/* keep compatibility with previous class names */
 .hidden {
   display: none !important;
 }
 
-/* Primary modal content class used earlier in CSS */
 .modal-content {
   background: white;
   padding: 25px;
   width: calc(100% - 40px);
-  max-width: 420px;
+  max-width: 400px;
   border-radius: 15px;
   text-align: left;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -183,116 +147,45 @@ textarea.error-border {
   overflow-y: auto;
 }
 
-/* New: support .modal-box used in your HTML */
-.modal-box {
-  background: white;
-  padding: 22px;
-  width: calc(100% - 40px);
-  max-width: 420px;
-  border-radius: 14px;
-  text-align: left;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-}
-
-/* Modal header/title */
-.modal-box h2,
 .modal-content h2 {
   margin-top: 0;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
   text-align: center;
   color: #333;
   font-size: clamp(20px, 4vw, 24px);
 }
 
-/* Modal close button (the small X at top) */
-.modal-close,
-.modal-box .modal-close,
-.modal-content .modal-close {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: transparent;
-  border: 1px solid #ddd;
-  color: #333;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  font-size: 16px;
-  line-height: 34px;
-  text-align: center;
-  cursor: pointer;
-}
-
-/* ensure "Đóng" button at bottom styled */
-.modal-box .btn,
-.modal-content .btn {
-  margin-top: 14px;
-}
-
-/* Result inside modal */
-#result,
-#resultContent {
-  line-height: 1.7;
+#result {
+  line-height: 1.8;
   font-size: 14px;
   color: #555;
 }
 
-#result b,
-#resultContent b {
+#result b {
   color: #333;
 }
 
-/* MEMBER LIST (small UI pieces) */
-.member-list {
-  margin-top: 10px;
-  border-top: 1px dashed #eee;
-  padding-top: 10px;
-}
-
-.member-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 8px;
-  align-items: center;
-  flex-wrap: nowrap;
-}
-
-.member-row input,
-.member-row select {
-  padding: 6px 8px;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  font-size: 13px;
-  background: #fff;
-}
-
-.member-row .small {
-  width: 110px;
-}
-
-.remove-btn {
-  background: #ff6b6b;
-  color: #fff;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-/* result box outside modal (if used) */
-.result-box {
-  margin-top: 12px;
-  background: #f9f9f9;
+. close-btn {
+  margin-top: 20px;
+  background: #e53935;
+  color: white;
   padding: 12px;
+  width: 100%;
+  border: none;
   border-radius: 8px;
-  color: #333;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background 0.3s, transform 0.1s;
 }
 
-/* Responsive tweaks */
+.close-btn:hover {
+  background: #d32f2f;
+}
+
+. close-btn:active {
+  transform: scale(0.98);
+}
 
 /* Tablet devices */
 @media screen and (max-width: 768px) {
@@ -300,13 +193,13 @@ textarea.error-border {
     padding: 10px;
   }
 
-  .container {
+  . container {
     width: calc(100% - 20px);
     margin: 20px auto;
     padding: 20px;
   }
 
-  .hero {
+  . hero {
     padding: 15px 0;
   }
 
@@ -324,12 +217,12 @@ textarea.error-border {
   .container {
     width: calc(100% - 20px);
     margin: 0 auto;
-    padding: 18px 14px;
+    padding: 20px 15px;
     border-radius: 12px;
   }
 
   .hero {
-    padding: 8px 0;
+    padding: 5px 0;
   }
 
   .hero-img {
@@ -343,19 +236,28 @@ textarea.error-border {
     padding: 0 10px;
   }
 
+  .error {
+    font-size: 12px;
+    color: #d84747;
+    font-weight: 600;
+    display: block;
+    margin-top: 5px;
+    min-height: 10px;
+  }
+
   label {
     font-size: 14px;
   }
 
-  input,
-  select,
-  textarea {
+  input {
     width: 100%;
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.95);
+    padding: 9px;
+    background: rgba(255, 255, 255, 0.6) !important;
     border-radius: 8px;
     border: 1px solid #ccc;
-    font-size: 14px;
+    transition: 0.3s;
+    -webkit-appearance: none;
+    appearance: none;
   }
 
   .btn {
@@ -363,27 +265,24 @@ textarea.error-border {
     font-size: 16px;
   }
 
-  .modal {
-    padding: 12px;
+  . modal {
+    padding: 15px;
   }
 
-  .modal-box,
   .modal-content {
-    width: calc(100% - 28px);
-    padding: 16px;
+    width: calc(100% - 30px);
+    padding: 20px;
     border-radius: 12px;
   }
 
-  .modal-box h2,
   .modal-content h2 {
     font-size: 20px;
-    margin-bottom: 14px;
+    margin-bottom: 15px;
   }
 
-  #result,
-  #resultContent {
+  #result {
     font-size: 13px;
-    line-height: 1.6;
+    line-height: 1.7;
   }
 
   .close-btn {
@@ -391,7 +290,7 @@ textarea.error-border {
     font-size: 15px;
     border-radius: 10px;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 3%;
     background-color: #bd5ad6;
     border: none;
     outline: none;
@@ -405,24 +304,28 @@ textarea.error-border {
     padding: 8px;
   }
 
-  .container {
+  . container {
     width: calc(100% - 16px);
     padding: 15px 12px;
   }
 
-  .title {
+  . title {
     font-size: 22px;
   }
 
-  .hero-img {
+  . hero-img {
     width: calc(100% - 16px);
   }
 
-  input,
-  select,
-  textarea {
+  input {
     width: 100%;
     padding: 12px;
+    background: rgba(255, 255, 255, 0.6) !important;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    transition: 0.3s;
+    -webkit-appearance: none;
+    appearance: none;
   }
 
   .btn {
@@ -430,14 +333,12 @@ textarea.error-border {
     font-size: 15px;
   }
 
-  .modal-box,
   .modal-content {
     width: calc(100% - 24px);
-    padding: 12px;
+    padding: 15px;
   }
 
-  #result,
-  #resultContent {
+  #result {
     font-size: 12px;
   }
 }
@@ -448,7 +349,7 @@ textarea.error-border {
     padding: 5px;
   }
 
-  .hero {
+  . hero {
     padding: 5px 0;
   }
 
@@ -469,8 +370,7 @@ textarea.error-border {
     max-width: 600px;
   }
 
-  .modal-box,
-  .modal-content {
+  . modal-content {
     max-height: 85vh;
   }
 }

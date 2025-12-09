@@ -43,13 +43,6 @@ function validateField(id) {
         return false;
       }
       break;
-    case "commission":
-      // optional field - allow empty
-      if (value !== "" && (isNaN(value) || parseInt(value) < 0)) {
-        setError(id, "Hoa hồng phải ≥ 0");
-        return false;
-      }
-      break;
     default:
       break;
   }
@@ -57,24 +50,19 @@ function validateField(id) {
   return true;
 }
 
-[
-  "men",
-  "women",
-  "courtTotal",
-  "shuttleCount",
-  "pricePerShuttle",
-  "commission",
-].forEach((id) => {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.addEventListener("input", () => {
-    validateField(id);
-    if (id === "men" || id === "women") {
-      const otherId = id === "men" ? "women" : "men";
-      validateField(otherId);
-    }
-  });
-});
+["men", "women", "courtTotal", "shuttleCount", "pricePerShuttle"].forEach(
+  (id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener("input", () => {
+      validateField(id);
+      if (id === "men" || id === "women") {
+        const otherId = id === "men" ? "women" : "men";
+        validateField(otherId);
+      }
+    });
+  }
+);
 
 // ====== UTILS ======
 function roundUpToThousand(num) {
@@ -152,14 +140,7 @@ if (closeBtn2) closeBtn2.addEventListener("click", closeModal);
 // ====== CALCULATE ======
 document.getElementById("calculateBtn").addEventListener("click", function () {
   let ok = true;
-  const ids = [
-    "men",
-    "women",
-    "courtTotal",
-    "shuttleCount",
-    "pricePerShuttle",
-    "commission",
-  ];
+  const ids = ["men", "women", "courtTotal", "shuttleCount", "pricePerShuttle"];
   ids.forEach((id) => {
     if (!validateField(id)) ok = false;
   });
@@ -170,138 +151,92 @@ document.getElementById("calculateBtn").addEventListener("click", function () {
   const courtTotal = parseInt(document.getElementById("courtTotal").value) || 0;
   const scount = parseInt(document.getElementById("shuttleCount").value) || 0;
   const pShut = parseInt(document.getElementById("pricePerShuttle").value) || 0;
-  const commission = parseInt(document.getElementById("commission").value) || 0;
 
   const shuttleCost = scount * pShut;
-  const totalProjected = courtTotal + shuttleCost + commission;
+  const totalProjected = courtTotal + shuttleCost;
 
-  // Gather declared members and their requested reductions (steps*5000)
-  const memberRows = Array.from(
-    memberContainer.querySelectorAll(".member-row")
-  );
-  const members = memberRows.map((r) => {
-    const name = r.querySelector('[data-field="name"]').value || "";
-    const gender = r.querySelector('[data-field="gender"]').value;
-    const minutes =
-      parseInt(r.querySelector('[data-field="minutes"]').value) || 0;
-    const steps = Math.floor(minutes / 30);
-    const requestedReduction = steps * 5000;
-    return { name, gender, minutes, steps, requestedReduction };
-  });
-
-  // Sum of requested reductions (initial)
-  let totalRequestedReductions = members.reduce(
-    (s, m) => s + m.requestedReduction,
-    0
-  );
-
-  // We need to ensure bases are set so that:
-  // perMan*men + perWoman*women >= totalProjected + effectiveReductions
-  // We don't yet know effectiveReductions (because reductions cannot exceed base), so iterate to stabilize.
   let perMan = 0,
     perWoman = 0,
     actualTotal = 0;
-  let totalNeeded = totalProjected + totalRequestedReductions;
-  // If there are no declared members, totalRequestedReductions = 0 and it's simple.
-  const maxIter = 8;
-  for (let iter = 0; iter < maxIter; iter++) {
-    if (men > 0 && women > 0) {
-      const solution = findOptimalSplit(totalNeeded, men, women);
-      perMan = solution.perMan;
-      perWoman = solution.perWoman;
-      actualTotal = solution.actualTotal; // this is perMan*men + perWoman*women
-    } else if (men > 0) {
-      perMan = roundUpToThousand(totalNeeded / men);
-      perWoman = 0;
-      actualTotal = perMan * men;
-    } else {
-      perWoman = roundUpToThousand(totalNeeded / women);
-      perMan = 0;
-      actualTotal = perWoman * women;
-    }
-
-    // Compute effective reductions (cannot exceed base for each member)
-    let effectiveReductions = 0;
-    members.forEach((m) => {
-      const base = m.gender === "man" ? perMan : perWoman;
-      const effective = Math.min(m.requestedReduction, base); // reduction cannot be more than base
-      effectiveReductions += effective;
-    });
-
-    const newTotalNeeded = totalProjected + effectiveReductions;
-    // If stabilized (no change) then break
-    if (newTotalNeeded === totalNeeded) {
-      totalRequestedReductions = effectiveReductions;
-      totalNeeded = newTotalNeeded;
-      break;
-    }
-    // Otherwise update and iterate
-    totalRequestedReductions = effectiveReductions;
-    totalNeeded = newTotalNeeded;
-    // continue loop with updated totalNeeded
+  if (men > 0 && women > 0) {
+    const solution = findOptimalSplit(totalProjected, men, women);
+    perMan = solution.perMan;
+    perWoman = solution.perWoman;
+    actualTotal = solution.actualTotal;
+  } else if (men > 0) {
+    perMan = roundUpToThousand(totalProjected / men);
+    actualTotal = perMan * men;
+  } else {
+    perWoman = roundUpToThousand(totalProjected / women);
+    actualTotal = perWoman * women;
   }
 
-  // After stabilization, actualTotal is perMan*men + perWoman*women
-  // Adjusted total actually collected after member reductions:
-  const adjustedTotal = actualTotal - totalRequestedReductions;
+  const memberRows = Array.from(
+    memberContainer.querySelectorAll(".member-row")
+  );
+  const members = memberRows.map((r) => ({
+    name: r.querySelector('[data-field="name"]').value || "",
+    gender: r.querySelector('[data-field="gender"]').value,
+    minutes: parseInt(r.querySelector('[data-field="minutes"]').value) || 0,
+  }));
 
-  // displayed diff (>=0)
-  const displayedDiff = Math.max(0, adjustedTotal - totalProjected);
-
-  // Build memberResults with effective reductions
   let menRemaining = men;
   let womenRemaining = women;
+  let adjustedTotal = 0;
   const memberResults = [];
   members.forEach((m) => {
-    const base = m.gender === "man" ? perMan : perWoman;
-    const effective = Math.min(m.requestedReduction, base);
-    const adjusted = Math.max(0, base - effective);
+    let base = m.gender === "man" ? perMan : perWoman;
+    const steps = Math.floor(m.minutes / 30);
+    const reduction = steps * 5000;
+    const adjusted = Math.max(0, base - reduction);
     memberResults.push({
       name: m.name,
       gender: m.gender,
       base,
       minutes: m.minutes,
-      requestedReduction: m.requestedReduction,
-      effectiveReduction: effective,
+      reduction,
       adjusted,
     });
+    adjustedTotal += adjusted;
     if (m.gender === "man") menRemaining--;
     else womenRemaining--;
   });
+  adjustedTotal += menRemaining > 0 ? menRemaining * perMan : 0;
+  adjustedTotal += womenRemaining > 0 ? womenRemaining * perWoman : 0;
+
+  // Diff must be >= 0 per user request
+  const rawDiff = adjustedTotal - totalProjected;
+  const displayedDiff = Math.max(0, rawDiff);
 
   // Build modal content
   let html = `<b>Chi tiết chi phí:</b><br>`;
   html += `• Tiền sân (tổng): ${courtTotal.toLocaleString("vi-VN")} VND<br>`;
   html += `• Tiền cầu: ${scount} × ${pShut.toLocaleString(
     "vi-VN"
-  )}đ = ${shuttleCost.toLocaleString("vi-VN")} VND<br>`;
-  if (commission > 0) {
-    html += `• Hoa hồng chủ nhóm: ${commission.toLocaleString(
-      "vi-VN"
-    )} VND<br>`;
-  }
-  html += `<br>`;
-  html += `<b>Tổng dự kiến: </b> ${totalProjected.toLocaleString(
+  )}đ = ${shuttleCost.toLocaleString("vi-VN")} VND<br><br>`;
+  html += `<b>Tổng dự kiến:</b> ${totalProjected.toLocaleString(
     "vi-VN"
   )} VND<br>`;
-  html += `<b>Tiền mỗi Nam:</b> ${perMan.toLocaleString("vi-VN")} đ<br>`;
-  html += `<b>Tiền mỗi Nữ:</b> ${perWoman.toLocaleString("vi-VN")} đ<br>`;
-  html += `<b>Chênh lệch Nam/Nữ:</b> ${(perMan - perWoman).toLocaleString(
+  html += `<b>Tiền mỗi Nam (base):</b> ${perMan.toLocaleString(
     "vi-VN"
-  )} đ<br><br>`;
+  )} đ (x${men})<br>`;
+  html += `<b>Tiền mỗi Nữ (base):</b> ${perWoman.toLocaleString(
+    "vi-VN"
+  )} đ (x${women})<br>`;
+  html += `<b>Chênh lệch Nam/Nữ (base):</b> ${(
+    perMan - perWoman
+  ).toLocaleString("vi-VN")} đ<br><br>`;
 
   if (memberResults.length > 0) {
     html += `<b>Điều chỉnh cá nhân (giảm 5k/30 phút):</b><br>`;
     memberResults.forEach((m) => {
       html += `• ${
         m.name || (m.gender === "man" ? "Nam" : "Nữ")
-      }: ${m.base.toLocaleString(
+      }: base ${m.base.toLocaleString("vi-VN")}đ, -${m.reduction.toLocaleString(
         "vi-VN"
-      )}đ, -${m.effectiveReduction.toLocaleString(
+      )}đ (tương đương ${m.minutes} phút) → ${m.adjusted.toLocaleString(
         "vi-VN"
-      )}đ (yêu cầu ${m.requestedReduction.toLocaleString("vi-VN")}đ cho ${
-        m.minutes
-      } phút) → ${m.adjusted.toLocaleString("vi-VN")}đ<br>`;
+      )}đ<br>`;
     });
     html += `<br>`;
   }

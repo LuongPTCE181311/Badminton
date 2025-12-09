@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tính Tiền Sân Cầu Lông</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <style>
+        .container {
+            max-width: 760px;
+            margin: 20px auto;
+            padding: 16px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .title {
+            margin: 8px 0;
+            font-size: 24px;
+            color: #0b5;
+        }
+
+        .form-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .form-group label {
+            width: 180px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select {
+            flex: 1;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+
+        .note {
+            font-size: 13px;
+            color: #666;
+            margin-top: 6px;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            background: #0b5;
+            color: #fff;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .member-list {
+            margin-top: 10px;
+            border-top: 1px dashed #eee;
+            padding-top: 10px;
+        }
+
+        .member-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .member-row input,
+        .member-row select {
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+
+        .small {
+            width: 110px;
+        }
+
+        .remove-btn {
+            background: #ff6b6b;
+            color: #fff;
+            border: none;
+            padding: 6px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .result-box {
+            margin-top: 12px;
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .error {
+            color: #d00;
+            font-size: 13px;
+            margin-left: 180px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hero">
+        <img src="assets/images/Caulongvuive.jpg" id="img" class="hero-img" alt="Group"
+            style="max-width:120px;border-radius:8px;" />
+        <h1 class="title">Cầu lông vui vẻ :3333</h1>
+        <div class="note">Gộp trường sân/giờ/giá thành 1 ô "Tiền sân (tổng)". Mặc định chênh lệch Nam/Nữ = 5.000đ. Giảm
+            5k/30 phút nếu ai đó đi trễ/về sớm.</div>
+    </div>
+
+    <div class="container">
+        <form id="calcForm" onsubmit="return false;">
+            <div class="form-group">
+                <label>Số lượng Nam:</label>
+                <input type="number" id="men" min="0" placeholder="VD: 4" />
+                <span class="error" id="men_err"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Số lượng Nữ:</label>
+                <input type="number" id="women" min="0" placeholder="VD: 3" />
+                <span class="error" id="women_err"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Tiền sân (tổng) VND:</label>
+                <input type="number" id="courtTotal" min="0"
+                    placeholder="Tổng tiền sân đã bao gồm số sân × giờ × giá/giờ" />
+                <span class="error" id="courtTotal_err"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Số lượng cầu:</label>
+                <input type="number" id="shuttleCount" min="0" placeholder="VD: 5" />
+                <span class="error" id="shuttleCount_err"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Tiền / 1 trái cầu VND:</label>
+                <input type="number" id="pricePerShuttle" min="0" placeholder="VD: 5000" />
+                <span class="error" id="pricePerShuttle_err"></span>
+            </div>
+
+            <div style="margin-top:10px;">
+                <strong>Chi tiết thành viên (tùy chọn):</strong>
+                <div class="note">Thêm thành viên nếu bạn muốn áp dụng giảm tiền cho những người đi trễ hoặc về sớm.
+                    Nhập số phút bị thiếu (minutes not played), cứ 30 phút giảm 5.000đ cho thành viên đó.</div>
+                <div id="memberContainer" class="member-list"></div>
+                <button type="button" id="addMemberBtn" class="btn" style="margin-top:8px;">+ Thêm thành viên</button>
+            </div>
+
+            <div style="margin-top:14px;">
+                <button type="button" id="calculateBtn" class="btn">Tính tiền</button>
+            </div>
+        </form>
+
+        <div id="result" class="result-box" style="display:none;"></div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>
